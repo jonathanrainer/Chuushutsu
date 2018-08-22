@@ -193,6 +193,9 @@ fabric.properties
 
 # Input Folders
 /input
+/logs
+/output
+/temp
 
 # IDE Folders
 /.idea
