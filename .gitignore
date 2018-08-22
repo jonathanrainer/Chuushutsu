@@ -127,6 +127,7 @@ venv.bak/
 [Ll]ib64
 [Ll]ocal
 [Ss]cripts
+
 pyvenv.cfg
 pip-selfcheck.json
 ### JetBrains template
@@ -199,3 +200,7 @@ fabric.properties
 
 # IDE Folders
 /.idea
+
+# Personal Overrides
+!scripts/sh
+!scripts/tcl
