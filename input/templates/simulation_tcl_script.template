@@ -1,0 +1,94 @@
+###
+#
+# Inputs
+#   0 - Simulation Mode (Behavioural etc.)
+#   1 - VCD Output Path
+###
+
+# Get the directory where this script resides
+set script_dir [file dirname [info script]]
+set project_dir $script_dir/{{ relative_project_directory }}
+
+# Set up directories for working files
+set rtl_root $project_dir/rtl
+set include_root $project_dir/include
+set mem_contents_root $script_dir/../memory_contents/
+
+# Create project
+create_project -force RyukiTest $script_dir/vivado_work -part xc7vx485tffg1761-2
+
+# Set project properties
+set obj [get_projects RyukiTest]
+set_property "board_part" "xilinx.com:vc707:part0:1.3" $obj
+set_property "simulator_language" "Verilog" $obj
+set_property "target_language" "Verilog" $obj
+
+# Setup filesets
+create_fileset -simset full_simulation
+current_fileset -simset [ get_filesets full_simulation ]
+delete_fileset sim_1
+
+# Add in design files from Pulpino Repo
+add_files -norecurse $include_root/riscv_config.sv
+add_files -norecurse $include_root/riscv_defines.sv
+add_files -norecurse $rtl_root/riscv_core.sv
+add_files -norecurse $rtl_root/cluster_clock_gating.sv
+add_files -norecurse $rtl_root/if_stage.sv
+add_files -norecurse $rtl_root/hwloop_controller.sv
+add_files -norecurse $rtl_root/compressed_decoder.sv
+add_files -norecurse $rtl_root/prefetch_buffer.sv
+add_files -norecurse $rtl_root/id_stage.sv
+add_files -norecurse $rtl_root/register_file_ff.sv
+add_files -norecurse $rtl_root/decoder.sv
+add_files -norecurse $rtl_root/controller.sv
+add_files -norecurse $rtl_root/exc_controller.sv
+add_files -norecurse $rtl_root/hwloop_regs.sv
+add_files -norecurse $rtl_root/ex_stage.sv
+add_files -norecurse $rtl_root/alu.sv
+add_files -norecurse $rtl_root/alu_div.sv
+add_files -norecurse $rtl_root/mult.sv
+add_files -norecurse $rtl_root/load_store_unit.sv
+add_files -norecurse $rtl_root/cs_registers.sv
+add_files -norecurse $rtl_root/debug_unit.sv
+add_files -norecurse $rtl_root/riscv_tracer.sv
+add_files -norecurse $rtl_root/core2axi.sv
+
+# Add in homebrewed files
+
+add_files -norecurse $rtl_root/ryuki_datatypes.sv
+add_files -norecurse $rtl_root/advanced_signal_tracker.sv
+add_files -norecurse $rtl_root/ex_tracker.sv
+add_files -norecurse $rtl_root/id_tracker.sv
+add_files -norecurse $rtl_root/if_tracker.sv
+add_files -norecurse $rtl_root/dragreder.sv
+add_files -norecurse $rtl_root/signal_tracker.sv
+add_files -norecurse $rtl_root/trace_buffer.sv
+add_files -norecurse $rtl_root/wb_tracker.sv
+
+# Add in generated files
+add_files -norecurse $script_dir/{{ defines_file }}
+add_files -norecurse $mem_contents_root/{{ instruction_mem_file }}
+add_files -norecurse $mem_contents_root/{{ data_mem_file }}
+
+# Add simulation testbenches
+add_files -norecurse -fileset full_simulation $script_dir/{{ testbench_file }}
+
+set sources_1_obj [get_filesets sources_1]
+set_property top riscv_core $sources_1_obj
+set full_sim_fileset [get_filesets full_simulation]
+set_property top {{ testbench_module_name }} $full_sim_fileset
+
+# Run the specified simulation
+launch_simulation -mode [lindex $argv 0] -simset full_simulation
+
+# Open a new VCD file to capture to required output
+open_vcd [lindex $argv 1]
+
+log_vcd /{{ testbench_module_name }}/tracer/*
+restart
+run -all
+
+# Close the finished VCD file
+close_vcd
+close_sim
+#close_project -delete -quiet
