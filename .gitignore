@@ -203,3 +203,4 @@ fabric.properties
 
 # Personal Overrides
 !scripts/sh
+.Xil/

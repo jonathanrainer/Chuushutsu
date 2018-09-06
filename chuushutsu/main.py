@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 from shiji.shiji import Shiji
 
@@ -31,8 +32,21 @@ class Chuushutsu(object):
                                                            Path(template_path, "testbench.template"),
                                                            temp_sim_path
                                                            )
+
+        # Take the data and create the set of loads/stores associated with each address
+        mem_addresses = \
+            sorted(list(set(
+                [x[1].address for x in trace_data if re.match("^0x[0-9A-Za-z]{6}[082Aa]3$", x[1].instruction)]
+            )))
+        load_store_set = { x : [] for x in mem_addresses}
+        for trace_item in trace_data:
+            if re.match("^0x[0-9A-Za-z]{6}[08]3$", trace_item[1].instruction):
+                load_store_set[trace_item[1].address].append((trace_item[0], trace_item[1], "LOAD"))
+            elif re.match("^0x[0-9A-Za-z]{6}[2Aa]3$", trace_item[1].instruction):
+                load_store_set[trace_item[1].address].append((trace_item[0], trace_item[1], "STORE"))
+        for address, instruction_set in load_store_set.items():
+            load_store_set[address] = sorted(instruction_set, key=lambda x: x[0])
         print("Hello World")
-        # Take the data and create the new queriable graph structure
         # Postprocess the graph to construct the requested, required, contention list elements
         # Scan over the graph to find potential re-orderings
         # Create a schedule of memory
