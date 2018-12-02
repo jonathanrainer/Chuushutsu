@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="sim_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="riscv_defines" />
+            <top_module name="ryuki_datatypes" />
+            <top_module name="sim_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="678000001fs"></ZoomEndTime>
+      <Cursor1Time time="155000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="200"></NameColumnWidth>
+      <ValueColumnWidth column_width="157"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="9" />
+   <wave_markers>
+      <marker label="" time="1461500000" />
+   </wave_markers>
+   <wvobject type="logic" fp_name="/sim_tb/clk_i">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">clk_i</obj_property>
+      <obj_property name="ObjectShortName">clk_i</obj_property>
+      <obj_property name="label">Clock</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/sim_tb/tracer/counter">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">counter[31:0]</obj_property>
+      <obj_property name="ObjectShortName">counter[31:0]</obj_property>
+      <obj_property name="label">Counter</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group268">
+      <obj_property name="label">Global Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/sim_tb/rst_ni">
+         <obj_property name="ElementShortName">rst_ni</obj_property>
+         <obj_property name="ObjectShortName">rst_ni</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/clock_en_i">
+         <obj_property name="ElementShortName">clock_en_i</obj_property>
+         <obj_property name="ObjectShortName">clock_en_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/test_en_i">
+         <obj_property name="ElementShortName">test_en_i</obj_property>
+         <obj_property name="ObjectShortName">test_en_i</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/boot_addr_i">
+         <obj_property name="ElementShortName">boot_addr_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">boot_addr_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/core_id_i">
+         <obj_property name="ElementShortName">core_id_i[3:0]</obj_property>
+         <obj_property name="ObjectShortName">core_id_i[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/cluster_id_i">
+         <obj_property name="ElementShortName">cluster_id_i[5:0]</obj_property>
+         <obj_property name="ObjectShortName">cluster_id_i[5:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group269">
+      <obj_property name="label">Instruction Memory</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/sim_tb/instr_req_o">
+         <obj_property name="ElementShortName">instr_req_o</obj_property>
+         <obj_property name="ObjectShortName">instr_req_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/instr_gnt_i">
+         <obj_property name="ElementShortName">instr_gnt_i</obj_property>
+         <obj_property name="ObjectShortName">instr_gnt_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/instr_rvalid_i">
+         <obj_property name="ElementShortName">instr_rvalid_i</obj_property>
+         <obj_property name="ObjectShortName">instr_rvalid_i</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/instr_addr_o">
+         <obj_property name="ElementShortName">instr_addr_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">instr_addr_o[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/instr_rdata_i">
+         <obj_property name="ElementShortName">instr_rdata_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">instr_rdata_i[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group270">
+      <obj_property name="label">Data Memory</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/sim_tb/data_req_o">
+         <obj_property name="ElementShortName">data_req_o</obj_property>
+         <obj_property name="ObjectShortName">data_req_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/data_gnt_i">
+         <obj_property name="ElementShortName">data_gnt_i</obj_property>
+         <obj_property name="ObjectShortName">data_gnt_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/data_rvalid_i">
+         <obj_property name="ElementShortName">data_rvalid_i</obj_property>
+         <obj_property name="ObjectShortName">data_rvalid_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/data_we_o">
+         <obj_property name="ElementShortName">data_we_o</obj_property>
+         <obj_property name="ObjectShortName">data_we_o</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/data_be_o">
+         <obj_property name="ElementShortName">data_be_o[3:0]</obj_property>
+         <obj_property name="ObjectShortName">data_be_o[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/data_addr_o">
+         <obj_property name="ElementShortName">data_addr_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">data_addr_o[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/data_wdata_o">
+         <obj_property name="ElementShortName">data_wdata_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">data_wdata_o[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/data_rdata_i">
+         <obj_property name="ElementShortName">data_rdata_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">data_rdata_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/data_err_i">
+         <obj_property name="ElementShortName">data_err_i</obj_property>
+         <obj_property name="ObjectShortName">data_err_i</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/sim_tb/core/id_stage_i/registers_i/rf_reg">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">rf_reg[31:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">rf_reg[31:0][31:0]</obj_property>
+      <obj_property name="label">Registers</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group271">
+      <obj_property name="label">Tracing</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/sim_tb/if_busy_o">
+         <obj_property name="ElementShortName">if_busy_o</obj_property>
+         <obj_property name="ObjectShortName">if_busy_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/if_ready_o">
+         <obj_property name="ElementShortName">if_ready_o</obj_property>
+         <obj_property name="ObjectShortName">if_ready_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/id_ready_o">
+         <obj_property name="ElementShortName">id_ready_o</obj_property>
+         <obj_property name="ObjectShortName">id_ready_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/is_decoding_o">
+         <obj_property name="ElementShortName">is_decoding_o</obj_property>
+         <obj_property name="ObjectShortName">is_decoding_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/jump_done_o">
+         <obj_property name="ElementShortName">jump_done_o</obj_property>
+         <obj_property name="ObjectShortName">jump_done_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/data_req_id_o">
+         <obj_property name="ElementShortName">data_req_id_o</obj_property>
+         <obj_property name="ObjectShortName">data_req_id_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/ex_ready_o">
+         <obj_property name="ElementShortName">ex_ready_o</obj_property>
+         <obj_property name="ObjectShortName">ex_ready_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/wb_ready_o">
+         <obj_property name="ElementShortName">wb_ready_o</obj_property>
+         <obj_property name="ObjectShortName">wb_ready_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/illegal_instr_o">
+         <obj_property name="ElementShortName">illegal_instr_o</obj_property>
+         <obj_property name="ObjectShortName">illegal_instr_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/core/ex_stage_i/branch_decision_o">
+         <obj_property name="ElementShortName">branch_decision_o</obj_property>
+         <obj_property name="ObjectShortName">branch_decision_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/core/id_stage_i/halt_id">
+         <obj_property name="ElementShortName">halt_id</obj_property>
+         <obj_property name="ObjectShortName">halt_id</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/core/if_stage_i/branch_req">
+         <obj_property name="ElementShortName">branch_req</obj_property>
+         <obj_property name="ObjectShortName">branch_req</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/core/if_stage_i/fetch_rdata">
+         <obj_property name="ElementShortName">fetch_rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">fetch_rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/core/if_stage_i/\prefetch_32.prefetch_buffer_i /rdata_o">
+         <obj_property name="ElementShortName">rdata_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">rdata_o[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/sim_tb/core/if_stage_i/\prefetch_32.prefetch_buffer_i /valid_o">
+         <obj_property name="ElementShortName">valid_o</obj_property>
+         <obj_property name="ObjectShortName">valid_o</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/trace_o">
+         <obj_property name="ElementShortName">trace_o</obj_property>
+         <obj_property name="ObjectShortName">trace_o</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group150">
+      <obj_property name="label">ALU</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/sim_tb/core/alu_operand_a_ex">
+         <obj_property name="ElementShortName">alu_operand_a_ex[31:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_operand_a_ex[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/core/alu_operand_b_ex">
+         <obj_property name="ElementShortName">alu_operand_b_ex[31:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_operand_b_ex[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/core/alu_operand_c_ex">
+         <obj_property name="ElementShortName">alu_operand_c_ex[31:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_operand_c_ex[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/core/alu_operator_ex">
+         <obj_property name="ElementShortName">alu_operator_ex[5:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_operator_ex[5:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/sim_tb/core/alu_vec_mode_ex">
+         <obj_property name="ElementShortName">alu_vec_mode_ex[1:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_vec_mode_ex[1:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group153">
+      <obj_property name="label">Jump &amp; Branch</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/sim_tb/core/ex_stage_i/jump_target_o">
+         <obj_property name="ElementShortName">jump_target_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">jump_target_o[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

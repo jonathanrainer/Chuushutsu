@@ -1,0 +1,70 @@
+import unittest
+from pathlib import Path
+
+from chuushutsu.main import Chuushutsu
+
+trace_data = None
+
+
+def setUpModule():
+    memory_size = 4096
+    system = Chuushutsu(memory_size, memory_size, memory_size)
+    global trace_data
+    trace_data = {int(k): v for k, v in system.extract_trace_data(
+                            Path("input", "benchmarks", "ud.c"), Path("temp", "memory_contents"),
+                            Path("temp", "simulation"), Path("input", "templates"), memory_size, memory_size,
+                            memory_size)}
+
+
+def tearDownModule():
+    global trace_data
+    trace_data = None
+
+{%  for time, trace_item in trace_items %}
+
+class {{ benchmark_name|capitalize }}_{{ trace_item.instruction|upper }}_{{ time|int }}_Tests(unittest.TestCase):
+
+    @unittest.skip("Attirbutes not verified yet")
+    def test_{{ benchmark_name }}_{{ trace_item.instruction|upper }}_{{ time|int }}_general_features(self):
+        trace_item = trace_data[{{ time|int }}]
+        self.assertEqual(trace_item.instruction, "{{ trace_item.instruction}}")
+        self.assertEqual(trace_item.address, "{{ trace_item.address }}")
+
+    @unittest.skip("Attirbutes not verified yet")
+    def test_{{ benchmark_name }}_{{ trace_item.instruction|upper }}_{{ time|int }}_if_phase(self):
+        trace_item = trace_data[{{ time|int }}]
+        self.assertEqual(trace_item.if_data["time_start"], "{{ trace_item.if_data["time_start"] }}")
+        self.assertEqual(trace_item.if_data["time_end"], "{{ trace_item.if_data["time_end"] }}")
+        self.assertEqual(trace_item.if_data["mem_access_req"]["time_start"], "{{ trace_item.if_data["mem_access_req"]["time_start"] }}")
+        self.assertEqual(trace_item.if_data["mem_access_req"]["time_end"], "{{ trace_item.if_data["mem_access_req"]["time_end"] }}")
+        self.assertEqual(trace_item.if_data["mem_access_res"]["time_start"], "{{ trace_item.if_data["mem_access_res"]["time_start"] }}")
+        self.assertEqual(trace_item.if_data["mem_access_res"]["time_end"], "{{ trace_item.if_data["mem_access_res"]["time_end"] }}")
+
+    @unittest.skip("Attirbutes not verified yet")
+    def test_{{ benchmark_name }}_{{ trace_item.instruction|upper }}_{{ time|int }}_id_phase(self):
+        trace_item = trace_data[{{ time|int }}]
+        self.assertEqual(trace_item.id_data["time_start"], "{{ trace_item.id_data["time_start"] }}")
+        self.assertEqual(trace_item.id_data["time_end"], "{{ trace_item.id_data["time_end"] }}")
+
+    @unittest.skip("Attirbutes not verified yet")
+    def test_{{ benchmark_name }}_{{ trace_item.instruction|upper }}_{{ time|int }}_ex_phase(self):
+        trace_item = trace_data[{{ time|int }}]
+        self.assertEqual(trace_item.ex_data["time_start"], "{{ trace_item.ex_data["time_start"] }}")
+        self.assertEqual(trace_item.ex_data["time_end"], "{{ trace_item.ex_data["time_end"] }}")
+        self.assertEqual(trace_item.ex_data["mem_addr"], "{{ trace_item.ex_data["mem_addr"] }}")
+        self.assertEqual(trace_item.ex_data["mem_access_req"]["time_start"], "{{ trace_item.ex_data["mem_access_req"]["time_start"] }}")
+        self.assertEqual(trace_item.ex_data["mem_access_req"]["time_end"], "{{ trace_item.ex_data["mem_access_req"]["time_end"] }}")
+
+    @unittest.skip("Attirbutes not verified yet")
+    def test_{{ benchmark_name }}_{{ trace_item.instruction|upper }}_{{ time|int }}_wb_phase(self):
+        trace_item = trace_data[{{ time|int }}]
+        self.assertEqual(trace_item.wb_data["time_start"], "{{ trace_item.wb_data["time_start"] }}")
+        self.assertEqual(trace_item.wb_data["time_end"], "{{ trace_item.wb_data["time_end"] }}")
+        self.assertEqual(trace_item.wb_data["mem_access_res"]["time_start"], "{{ trace_item.wb_data["mem_access_res"]["time_start"] }}")
+        self.assertEqual(trace_item.wb_data["mem_access_res"]["time_end"], "{{ trace_item.wb_data["mem_access_res"]["time_end"] }}")
+
+
+{% endfor %}
+
+if __name__ == '__main__':
+    unittest.main()

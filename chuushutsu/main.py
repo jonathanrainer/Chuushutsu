@@ -18,43 +18,53 @@ class Chuushutsu(object):
             Path.home().joinpath("Documents", "Experiments", "4_pulpino", "Ryuki"), self.os_interface)
 
     def run(self, benchmark_path, temp_mem_path, temp_sim_path, template_path, instruction_memory_size,
-            data_memory_size, stack_size):
+            data_memory_size, stack_size, save_data_loc):
+        trace_data = self.extract_trace_data(benchmark_path, temp_mem_path, temp_sim_path, template_path,
+                                             instruction_memory_size, data_memory_size, stack_size, save_data_loc)
+        # Take the data and create the set of loads/stores associated with each address
+        load_store_set = self.create_load_store_set(trace_data)
+        # Postprocess the graph to construct the requested, required, contention list elements
+        # Scan over the graph to find potential re-orderings
+        # Create a schedule of memory
+        return 0
+
+    def extract_trace_data(self, benchmark_path, temp_mem_path, temp_sim_path, template_path, instruction_memory_size,
+                           data_memory_size, stack_size, save_data_loc):
         self.os_interface.construct_temporary_folders(
             [temp_mem_path, temp_sim_path]
         )
         # Take in some raw C code, and construct the appropriate testbench
         mem_contents = self.shiji.run(benchmark_path, False)
         # Compile it and run the simulation using that benchmark
-        trace_data = self.simulation_engine.run_simulation(mem_contents[0][0], instruction_memory_size, mem_contents[0][2],
+        trace_data = self.simulation_engine.run_simulation(mem_contents[0][0], instruction_memory_size,
+                                                           mem_contents[0][2],
                                                            mem_contents[1][0], data_memory_size + stack_size,
                                                            Path(template_path, "simulation_tcl_script.template"),
                                                            Path(template_path, "ryuki_defines.template"),
                                                            Path(template_path, "testbench.template"),
-                                                           temp_sim_path
+                                                           temp_sim_path, save_data_loc
                                                            )
+        return trace_data
 
-        # Take the data and create the set of loads/stores associated with each address
+    def create_load_store_set(self, trace_data):
         mem_addresses = \
-            sorted(list(set(
-                [x[1].address for x in trace_data if re.match("^0x[0-9A-Za-z]{6}[082Aa]3$", x[1].instruction)]
-            )))
-        load_store_set = { x : [] for x in mem_addresses}
+            sorted(list(set([x[1].ex_data["mem_addr"] for x in trace_data if
+                             re.match("^0x[0-9A-Za-z]{6}[082Aa]3$", x[1].instruction)])))
+        load_store_set = {x: [] for x in mem_addresses}
         for trace_item in trace_data:
-            if re.match("^0x[0-9A-Za-z]{6}[08]3$", trace_item[1].instruction):
-                load_store_set[trace_item[1].address].append((trace_item[0], trace_item[1], "LOAD"))
-            elif re.match("^0x[0-9A-Za-z]{6}[2Aa]3$", trace_item[1].instruction):
-                load_store_set[trace_item[1].address].append((trace_item[0], trace_item[1], "STORE"))
+            if re.match("^0x[0-9A-Za-z]{6}[08]3$", trace_item[1].instruction) and \
+                    trace_item[1].ex_data["time_start"] != trace_item[1].ex_data["time_end"]:
+                load_store_set[trace_item[1].ex_data["mem_addr"]].append((trace_item[0], trace_item[1], "LOAD"))
+            elif re.match("^0x[0-9A-Za-z]{6}[2Aa]3$", trace_item[1].instruction) and \
+                    trace_item[1].ex_data["time_start"] != trace_item[1].ex_data["time_end"]:
+                load_store_set[trace_item[1].ex_data["mem_addr"]].append((trace_item[0], trace_item[1], "STORE"))
         for address, instruction_set in load_store_set.items():
             load_store_set[address] = sorted(instruction_set, key=lambda x: x[0])
-        print("Hello World")
-        # Postprocess the graph to construct the requested, required, contention list elements
-        # Scan over the graph to find potential re-orderings
-        # Create a schedule of memory
-        return 0
+        return load_store_set
 
 
 if __name__ == "__main__":
     memory_size = 4096
     system = Chuushutsu(memory_size, memory_size, memory_size)
-    system.run(Path("input", "benchmarks", "fdct.c"), Path("temp", "memory_contents"), Path("temp", "simulation"),
+    system.run(Path("input", "benchmarks", "ud.c"), Path("temp", "memory_contents"), Path("temp", "simulation"),
             Path("input", "templates"), memory_size, memory_size, memory_size)

@@ -2,6 +2,7 @@ import os
 
 from jinja2 import Template
 from pathlib import Path
+from shutil import copyfile
 
 from joushi.vcd_engine import VCDEngine
 
@@ -14,7 +15,7 @@ class SimulationEngine(object):
         self.vcd_engine = VCDEngine()
 
     def run_simulation(self, instruction_memory_file, num_instr_words, trap_address, data_memory_file, num_data_words,
-                       tcl_template_file, defines_template_file, testbench_template_file, temp_directory):
+                       tcl_template_file, defines_template_file, testbench_template_file, temp_directory, save_data_loc):
         # Generate the correct define file
         defines_path = Path(temp_directory, "ryuki_defines.sv")
         testbench_path = Path(temp_directory, "testbench.sv")
@@ -46,6 +47,8 @@ class SimulationEngine(object):
         # Run the SH Script to invoke the TCL Script and run that through Vivado
         self.os_interface.run_simulation(tcl_path, "behavioral", vcd_output_file.absolute())
         # Structure the output data and then return it
+        if save_data_loc:
+            copyfile(str(vcd_output_file), str(save_data_loc))
         return self.vcd_engine.extract_tracing_information(vcd_output_file, testbench_module_name)
 
     @staticmethod

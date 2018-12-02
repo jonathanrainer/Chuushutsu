@@ -15,7 +15,7 @@ module instruction_memory
     output logic [DATA_WIDTH-1:0]   rdata_o
   );
 
-  localparam words = NUM_WORDS/(DATA_WIDTH/8);
+  localparam words = NUM_WORDS;
 
   logic [DATA_WIDTH/8-1:0][7:0] mem[words];
   logic [ADDR_WIDTH-1-$clog2(DATA_WIDTH/8):0] addr;
