@@ -1,3 +1,6 @@
+import os
+import re
+
 from pathlib import Path
 from jinja2 import Template
 
@@ -31,9 +34,63 @@ class TestGenerator(object):
                 benchmark_name = benchmark_path.stem
             ))
 
+    def generate_trace_indexes(self, test_case_path):
+        # Read the file contents into memory
+        with open(str(test_case_path), 'r') as test_cases_file:
+            file_contents = test_cases_file.readlines()
+        # Iterate over the file contents to find the occurences of the keyword class
+        final_file_contents = []
+        instruction_index = 0
+        test_index = 0
+        for class_counter,line in enumerate(file_contents):
+            class_match = re.match("^class (.*)_(0X[0-9A-F]+.*)_([0-9]+)_.*", file_contents[class_counter])
+            if class_match:
+                test_index = 1
+                instruction_index += 1
+                # When a class has been found we can begin work, first we need to find the first line of the if_data
+                # because this gives us a unique data point by which to find the information needed.
+                final_file_contents.append("class {0}_{1}_{2}_Tests(unittest.TestCase):".format(
+                    class_match.group(1), instruction_index, class_match.group(2)
+                ))
+                for if_marker_counter, _ in enumerate(file_contents[class_counter+1:], start=class_counter+1):
+                    matches = re.match(
+                        "^.*self.assertEqual\(trace_item\.if_data\[\"time_start\"\], \"(0x[A-F0-9a-f]+)\".*",
+                        file_contents[if_marker_counter])
+                    if matches:
+                        break
+                    # With this new information add in a setUp method to the class
+                final_file_contents.extend([
+                    "\n", "\n", "    def setUp(self):\n", "        self.trace_item = [trace_item for\n",
+                    "                          trace_item in trace_data.values() if trace_item.if_data[\"time_start\"] "
+                    "== \"{}\"][0]\n".format(matches.group(1))])
+            elif re.match(".*trace_item = trace_data\[[0-9]+\]", line):
+                continue
+            elif re.match("\s+self\.assertEqual\(trace_item\..*\)", line):
+                data_points = re.match("\s+self\.assertEqual\(trace_item\.(.*), \"(.*)\"\)", line)
+                final_file_contents.append("        self.assertEqual(self.trace_item.{0}, \"{1}\")\n".format(
+                    data_points.group(1), data_points.group(2)
+                ))
+            elif re.match("\s+ def test.*", line):
+                method_elements = re.match("\s+def test_(.*)_(0X[0-9A-F]+)_[0-9]+_(.*)\(.*", line)
+                final_file_contents.append("    def test_{0}_{1}_{2}_{3}_{4}(self):\n".format(
+                    method_elements.group(1), instruction_index, method_elements.group(2), test_index,
+                    method_elements.group(3)
+                ))
+                test_index += 1
+            else:
+                final_file_contents.append(line)
+        print("Hello World")
+        with open(str(Path("tests", "ud_integration_tests_updated.py")), 'w') as new_file:
+            for line in final_file_contents:
+                new_file.write(line)
+
+
+
+
 
 if __name__ == "__main__":
     memory_size = 4096
     system = TestGenerator(memory_size, memory_size, memory_size)
-    system.generate_test_cases(Path("input", "benchmarks", "ud.c"), Path("temp", "memory_contents"), Path("temp", "simulation"),
-            Path("input", "templates"), memory_size, memory_size, memory_size)
+    system.generate_trace_indexes(Path("tests", "ud_integration_tests.py"))
+    #system.generate_test_cases(Path("input", "benchmarks", "ud.c"), Path("temp", "memory_contents"), Path("temp", "simulation"),
+            #Path("input", "templates"), memory_size, memory_size, memory_size)

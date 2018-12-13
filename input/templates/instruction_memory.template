@@ -51,37 +51,37 @@ module instruction_memory
     unique case(State)
         SLEEP: 
         begin
-            rvalid_o = 0;
+            rvalid_o <= 0;
             if (req_i == 1)
             begin
-                Next = WAITG;
-            end    
+                Next <= WAITG;
+            end
         end
         WAITG:
         begin
             if (delay_counter < delay_limit) delay_counter++;
-            else 
+            else
             begin
-                delay_counter = 0;
-                Next = GRANT;
-                gnt_o = 1;
-                addr = addr_i[ADDR_WIDTH-1:$clog2(DATA_WIDTH/8)];
+                delay_counter <= 0;
+                Next <= GRANT;
+                gnt_o <= 1;
             end
          end
-         GRANT: 
+         GRANT:
          begin
-            gnt_o = 0;
-            Next = WAITR;
+            gnt_o <= 0;
+            addr <= addr_i[ADDR_WIDTH-1:$clog2(DATA_WIDTH/8)];
+            Next <= WAITR;
          end
          WAITR:
          begin
             if (delay_counter < delay_limit) delay_counter++;
-            else 
+            else
             begin
-                delay_counter = 0;
-                Next = SLEEP;
-                rvalid_o = 1;
-                rdata_o = mem[addr];
+                delay_counter <= 0;
+                Next <= SLEEP;
+                rvalid_o <= 1;
+                rdata_o <= mem[addr];
             end
          end
       endcase 

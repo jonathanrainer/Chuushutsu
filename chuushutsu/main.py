@@ -67,4 +67,4 @@ if __name__ == "__main__":
     memory_size = 4096
     system = Chuushutsu(memory_size, memory_size, memory_size)
     system.run(Path("input", "benchmarks", "ud.c"), Path("temp", "memory_contents"), Path("temp", "simulation"),
-            Path("input", "templates"), memory_size, memory_size, memory_size)
+            Path("input", "templates"), memory_size, memory_size, memory_size,Path("output", "data.vcd"))
